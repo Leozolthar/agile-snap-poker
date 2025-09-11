@@ -48,7 +48,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="min-h-screen bg-gradient-to-br from-muted/20 via-background to-muted/30">
       {/* Hero Section */}
       <section className="relative py-20 px-4 text-center overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-5" />
@@ -65,7 +65,7 @@ const Home = () => {
             </div>
             <div className="relative animate-slide-up">
               <img 
-                src={heroImage} 
+                src="/lovable-uploads/d0bf1c6a-0bce-4a6b-ad1a-4a0663a71b5b.png" 
                 alt="Planning Poker Hero" 
                 className="rounded-2xl shadow-2xl max-w-full h-auto"
               />

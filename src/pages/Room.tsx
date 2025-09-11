@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee } from "lucide-react";
+import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const POKER_VALUES = [
@@ -91,12 +91,20 @@ const Room = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-muted/20 via-background to-muted/30 p-4">
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Planning Poker Session</h1>
+            <div className="flex items-center gap-4 mb-2">
+              <Link to="/">
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <Home className="w-4 h-4" />
+                  Home
+                </Button>
+              </Link>
+              <h1 className="text-3xl font-bold">Planning Poker Session</h1>
+            </div>
             <div className="flex items-center gap-4">
               <Badge variant="outline" className="text-lg px-3 py-1">
                 Room: {roomCode}
