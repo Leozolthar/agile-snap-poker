@@ -40,9 +40,6 @@ const Room = () => {
   const [votesRevealed, setVotesRevealed] = useState(false);
   const [players, setPlayers] = useState<Player[]>([
     { id: "1", name: playerName, isModerator },
-    { id: "2", name: "Alice", vote: "5", isModerator: false },
-    { id: "3", name: "Bob", vote: "8", isModerator: false },
-    { id: "4", name: "Charlie", vote: "?", isModerator: false },
   ]);
 
   const currentPlayer = players.find(p => p.name === playerName);

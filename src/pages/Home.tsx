@@ -62,14 +62,6 @@ const Home = () => {
                 Streamline your agile estimation sessions with our modern, intuitive Planning Poker tool. 
                 Perfect for remote and in-person teams.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="hero" size="lg" className="text-lg px-8">
-                  Get Started Free
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8">
-                  Learn More
-                </Button>
-              </div>
             </div>
             <div className="relative animate-slide-up">
               <img 
