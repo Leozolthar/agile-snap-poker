@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Zap, BarChart3, Shield } from "lucide-react";
 import heroImage from "@/assets/hero-planning-poker.jpg";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const Home = () => {
   const [roomCode, setRoomCode] = useState("");
@@ -49,6 +50,11 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-muted/20 via-background to-muted/30">
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+      
       {/* Hero Section */}
       <section className="relative py-20 px-4 text-center overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-5" />

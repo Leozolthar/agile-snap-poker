@@ -122,9 +122,9 @@
 @layer components {
   /* Poker Card Styles */
   .poker-card {
-    @apply relative bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-xl shadow-[var(--shadow-card)] 
+    @apply relative bg-gradient-to-br from-card to-card/90 border-2 border-border rounded-xl shadow-[var(--shadow-card)] 
            hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 cursor-pointer transition-[var(--transition-smooth)]
-           min-h-[120px] flex items-center justify-center text-2xl font-bold select-none;
+           min-h-[120px] flex items-center justify-center text-2xl font-bold select-none text-card-foreground;
   }
 
   .poker-card:hover {
@@ -146,7 +146,7 @@
 
   /* Glass effect for cards */
   .glass-card {
-    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-[var(--shadow-card)];
+    @apply bg-card/80 backdrop-blur-lg border border-border shadow-[var(--shadow-card)];
   }
 
   /* Animation utilities */

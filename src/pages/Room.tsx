@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const POKER_VALUES = [
   { value: "0", label: "0" },
@@ -92,6 +93,11 @@ const Room = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-muted/20 via-background to-muted/30 p-4">
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+      
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
