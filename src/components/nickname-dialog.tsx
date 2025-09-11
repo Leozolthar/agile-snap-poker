@@ -39,7 +39,7 @@ export function NicknameDialog({ open, onClose, currentName }: NicknameDialogPro
   };
 
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Set Your Nickname</DialogTitle>
