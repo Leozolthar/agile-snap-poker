@@ -46,7 +46,9 @@ export function usePokerRoom({ roomCode, playerName, isModerator }: UsePokerRoom
   const normalizedRoomCode = (roomCode || "").trim().toLowerCase();
   const channel = useMemo(() => {
     if (!normalizedRoomCode) return null;
-    return supabase.channel(`room:${normalizedRoomCode}`, {
+    const topic = `pp_room_${normalizedRoomCode}`;
+    console.debug('[PokerRoom] Creating channel', topic);
+    return supabase.channel(topic, {
       config: {
         broadcast: { ack: true },
         presence: { key: playerIdRef.current },
@@ -76,17 +78,23 @@ export function usePokerRoom({ roomCode, playerName, isModerator }: UsePokerRoom
   useEffect(() => {
     if (!channel) return;
 
+    console.debug('[PokerRoom] Subscribing to channel', (channel as any).topic);
+
     channel
       .on("presence", { event: "sync" }, () => {
+        console.debug('[PokerRoom] presence sync', channel.presenceState());
         rebuildPlayersFromPresence();
       })
       .on("presence", { event: "join" }, () => {
+        console.debug('[PokerRoom] presence join', channel.presenceState());
         rebuildPlayersFromPresence();
       })
       .on("presence", { event: "leave" }, () => {
+        console.debug('[PokerRoom] presence leave', channel.presenceState());
         rebuildPlayersFromPresence();
       })
       .on("broadcast", { event: "vote" }, ({ payload }: any) => {
+        console.debug('[PokerRoom] vote broadcast', payload);
         const { playerId, value } = payload as { playerId: string; value: PokerValue | null };
         setPlayers((prev) => prev.map((p) => (p.id === playerId ? { ...p, vote: value ?? undefined } : p)));
         if (playerId === playerIdRef.current) {
@@ -95,28 +103,34 @@ export function usePokerRoom({ roomCode, playerName, isModerator }: UsePokerRoom
       })
       .on("broadcast", { event: "reveal" }, ({ payload }: any) => {
         const { revealed } = payload as { revealed: boolean };
+        console.debug('[PokerRoom] reveal broadcast', revealed);
         setVotesRevealed(!!revealed);
       })
       .on("broadcast", { event: "new_round" }, () => {
+        console.debug('[PokerRoom] new_round broadcast');
         setSelectedVote(null);
         setVotesRevealed(false);
         setPlayers((prev) => prev.map((p) => ({ ...p, vote: undefined })));
       });
 
     const sub = channel.subscribe(async (status) => {
+      console.debug('[PokerRoom] channel status', status);
       if (status !== "SUBSCRIBED") return;
       // Track (or update) presence for this user
-      await channel.track({
+      const trackPayload = {
         id: playerIdRef.current,
         name: playerName || "Anonymous",
         isModerator: !!isModerator,
         vote: selectedVote,
         online_at: new Date().toISOString(),
-      });
+      };
+      const res = await channel.track(trackPayload);
+      console.debug('[PokerRoom] presence tracked', res, trackPayload);
     });
 
     return () => {
       try {
+        console.debug('[PokerRoom] Unsubscribing channel', (channel as any).topic);
         sub.unsubscribe?.();
       } catch {}
       supabase.removeChannel(channel);
