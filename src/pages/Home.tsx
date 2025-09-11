@@ -65,8 +65,7 @@ const Home = () => {
                 Planning Poker
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Streamline your agile estimation sessions with our modern, intuitive Planning Poker tool. 
-                Perfect for remote and in-person teams.
+                Modern Planning Poker tool for agile teams. Create estimation sessions, vote anonymously, and analyze results in real-time.
               </p>
             </div>
             <div className="relative animate-slide-up">
