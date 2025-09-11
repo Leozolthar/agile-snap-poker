@@ -53,8 +53,12 @@ export function NicknameDialog({ open, onClose, currentName }: NicknameDialogPro
               value={name}
               onChange={(e) => setName(e.target.value)}
               onKeyDown={handleKeyDown}
+              maxLength={25}
               autoFocus
             />
+            <div className="text-xs text-muted-foreground text-right">
+              {name.length}/25 characters
+            </div>
           </div>
         </div>
         <DialogFooter>
