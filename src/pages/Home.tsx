@@ -118,7 +118,11 @@ const Home = () => {
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                     className="text-center"
+                    maxLength={25}
                   />
+                  <div className="text-xs text-muted-foreground text-right">
+                    {playerName.length}/25 characters
+                  </div>
                 </div>
 
                 <Tabs defaultValue="create" className="w-full">
