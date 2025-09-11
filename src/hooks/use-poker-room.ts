@@ -42,16 +42,17 @@ export function usePokerRoom({ roomCode, playerName, isModerator }: UsePokerRoom
   const [selectedVote, setSelectedVote] = useState<PokerValue | null>(null);
   const [votesRevealed, setVotesRevealed] = useState(false);
 
-  // Create a channel per room
+  // Create a channel per room (normalized to avoid case/whitespace mismatches)
+  const normalizedRoomCode = (roomCode || "").trim().toLowerCase();
   const channel = useMemo(() => {
-    if (!roomCode) return null;
-    return supabase.channel(`room:${roomCode}`, {
+    if (!normalizedRoomCode) return null;
+    return supabase.channel(`room:${normalizedRoomCode}`, {
       config: {
         broadcast: { ack: true },
         presence: { key: playerIdRef.current },
       },
     });
-  }, [roomCode]);
+  }, [normalizedRoomCode]);
 
   // Helpers to rebuild players from presence state
   const rebuildPlayersFromPresence = () => {
@@ -138,7 +139,7 @@ export function usePokerRoom({ roomCode, playerName, isModerator }: UsePokerRoom
       } catch {}
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playerName, isModerator]);
+  }, [playerName, isModerator, selectedVote]);
 
   const vote = (value: PokerValue) => {
     setSelectedVote((prev) => {
