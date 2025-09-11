@@ -1,13 +1,15 @@
 
 import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home } from "lucide-react";
+import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePokerRoom } from "@/hooks/use-poker-room";
+import { NicknameDialog } from "@/components/nickname-dialog";
 
 const POKER_VALUES = [
   { value: "0", label: "0" },
@@ -37,6 +39,7 @@ const Room = () => {
   const playerName = searchParams.get("name") || "Anonymous";
   const isModerator = searchParams.get("moderator") === "true";
   const { toast } = useToast();
+  const [showNicknameDialog, setShowNicknameDialog] = useState(playerName === "Anonymous");
 
   const { players, selectedVote, votesRevealed, vote, toggleReveal, newRound } = usePokerRoom({
     roomCode: roomCode || "",
@@ -100,9 +103,20 @@ const Room = () => {
               <Badge variant="outline" className="text-lg px-3 py-1">
                 Room: {roomCode}
               </Badge>
-              <Button variant="ghost" size="sm" onClick={copyRoomLink}>
-                Share Room
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={copyRoomLink}>
+                  Share Room
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowNicknameDialog(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  Change Name
+                </Button>
+              </div>
             </div>
           </div>
           
@@ -243,6 +257,12 @@ const Room = () => {
           </div>
         </div>
       </div>
+
+      <NicknameDialog 
+        open={showNicknameDialog}
+        onClose={() => setShowNicknameDialog(false)}
+        currentName={playerName}
+      />
     </div>
   );
 };
