@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { usePokerRoom } from "@/hooks/use-poker-room";
 
 const POKER_VALUES = [
   { value: "0", label: "0" },
@@ -37,13 +38,12 @@ const Room = () => {
   const isModerator = searchParams.get("moderator") === "true";
   const { toast } = useToast();
 
-  const [selectedVote, setSelectedVote] = useState<string | null>(null);
-  const [votesRevealed, setVotesRevealed] = useState(false);
-  const [players, setPlayers] = useState<Player[]>([
-    { id: "1", name: playerName, isModerator },
-  ]);
+  const { players, selectedVote, votesRevealed, vote, toggleReveal, newRound } = usePokerRoom({
+    roomCode: roomCode || "",
+    playerName,
+    isModerator,
+  });
 
-  const currentPlayer = players.find(p => p.name === playerName);
   const playersWithVotes = players.filter(p => p.vote);
   const voteDistribution = votesRevealed ? 
     POKER_VALUES.map(pv => ({
@@ -51,36 +51,21 @@ const Room = () => {
       count: players.filter(p => p.vote === pv.value).length,
     })).filter(v => v.count > 0) : [];
 
-  useEffect(() => {
-    // Simulate adding current player vote
-    if (selectedVote && currentPlayer) {
-      setPlayers(prev => prev.map(p => 
-        p.id === currentPlayer.id ? { ...p, vote: selectedVote } : p
-      ));
-    }
-  }, [selectedVote, currentPlayer?.id]);
 
   const handleVote = (value: string) => {
-    setSelectedVote(selectedVote === value ? null : value);
-    toast({
-      description: selectedVote === value ? "Vote removed" : `Voted ${value}`,
-    });
+    const next = selectedVote === value ? null : value;
+    vote(value);
+    toast({ description: next === null ? "Vote removed" : `Voted ${value}` });
   };
 
   const handleRevealVotes = () => {
-    setVotesRevealed(!votesRevealed);
-    toast({
-      description: votesRevealed ? "Votes hidden" : "Votes revealed!",
-    });
+    toggleReveal();
+    toast({ description: votesRevealed ? "Votes hidden" : "Votes revealed!" });
   };
 
   const handleNewRound = () => {
-    setSelectedVote(null);
-    setVotesRevealed(false);
-    setPlayers(prev => prev.map(p => ({ ...p, vote: undefined })));
-    toast({
-      description: "New round started",
-    });
+    newRound();
+    toast({ description: "New round started" });
   };
 
   const copyRoomLink = async () => {
