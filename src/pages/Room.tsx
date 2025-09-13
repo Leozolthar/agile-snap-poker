@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, RefreshCw, Users, Crown, Coffee, Home, Settings } from "lucide-react";
+import { Eye, EyeOff, RefreshCw, Users, Crown, Home, Settings } from "lucide-react";
+import dunkinDrink from "@/assets/dunkin-drink.jpg";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { usePokerRoom } from "@/hooks/use-poker-room";
@@ -156,7 +157,7 @@ const Room = () => {
                       className={`poker-card ${selectedVote === card.value ? 'selected' : ''} ${votesRevealed && !isModerator ? 'disabled' : ''}`}
                       onClick={() => !votesRevealed && handleVote(card.value)}
                     >
-                      {card.value === "☕" ? <Coffee className="w-8 h-8" /> : card.label}
+                      {card.value === "☕" ? <img src={dunkinDrink} alt="Break" className="w-8 h-8 object-cover rounded" /> : card.label}
                     </div>
                   ))}
                 </div>
@@ -174,7 +175,7 @@ const Room = () => {
                     {voteDistribution.map((vote) => (
                       <div key={vote.value} className="flex items-center gap-4">
                         <div className="poker-card !min-h-[60px] !text-lg w-16 flex-shrink-0">
-                          {vote.value === "☕" ? <Coffee className="w-5 h-5" /> : vote.value}
+                          {vote.value === "☕" ? <img src={dunkinDrink} alt="Break" className="w-5 h-5 object-cover rounded" /> : vote.value}
                         </div>
                         <div className="flex-1">
                           <div className="flex justify-between items-center mb-1">
@@ -221,7 +222,7 @@ const Room = () => {
                         {player.vote ? (
                           <Badge variant={votesRevealed ? "default" : "secondary"}>
                             {votesRevealed ? (
-                              player.vote === "☕" ? <Coffee className="w-3 h-3" /> : player.vote
+                              player.vote === "☕" ? <img src={dunkinDrink} alt="Break" className="w-3 h-3 object-cover rounded" /> : player.vote
                             ) : "✓"}
                           </Badge>
                         ) : (
